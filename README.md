@@ -21,14 +21,14 @@ This guide outlines the process of setting up a CI/CD pipeline for a Flutter mob
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "DocDoc Development",
+            "name": "APP_NAME Development",
             "request": "launch",
             "type": "dart",
             "program": "lib/main_development.dart",
             "args": ["--flavor", "Development", "--target", "lib/main_development.dart"]
         },
         {
-            "name": "DocDoc Production",
+            "name": "APP_NAME Production",
             "request": "launch",
             "type": "dart",
             "program": "lib/main_production.dart",
@@ -43,12 +43,12 @@ flavorDimensions "default"
 productFlavors {
     production {
         dimension "default"
-        resValue "string", "app_name", "DocDoc Production"
+        resValue "string", "app_name", "APP_NAME Production"
     }
     development {
         dimension "default"
         applicationIdSuffix ".dev"
-        resValue "string", "app_name", "DocDoc Development"
+        resValue "string", "app_name", "APP_NAME Development"
     }
 }
 ```
