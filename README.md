@@ -97,7 +97,7 @@ flutter run --release -t lib/main_production.dart --flavor production
    - ```sh
      gem install fastlane
      ```
-3. Initialize Fastlane (in the project roor):
+3. Initialize Fastlane (in project root):
    
    - ```sh
      cd android
