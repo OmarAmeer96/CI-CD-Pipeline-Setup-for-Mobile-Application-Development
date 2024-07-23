@@ -107,8 +107,7 @@ flutter run --release -t lib/main_production.dart --flavor production
 ## Integrating Firebase with Fastlane
 
 1. Add the Firebase App Distribution plugin:
-
-- ```sh
+   - ```sh
      fastlane add_plugin firebase_app_distribution
      ```
    
