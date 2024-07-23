@@ -119,7 +119,7 @@ flutter run --release -t lib/main_production.dart --flavor production
      ```
      Save the token for later use.
      
-3. The Fastfile will be automatically created, update it with the following:
+3. The `..\android\fastlane\Fastfile` file will be automatically created, update it with the following:
    
    - ```ruby
      default_platform(:android)
@@ -155,7 +155,7 @@ flutter run --release -t lib/main_production.dart --flavor production
      - FIREBASE_CLI_TOKEN
      - APP_ID
 
-2. Create a GitHub Actions workflow file (.github\workflows\android_fastlane_firebase_app_distribution_workflow.yml):
+2. Create a GitHub Actions workflow file `..\.github\workflows\android_fastlane_firebase_app_distribution_workflow.yml`:
 
    - ```yaml
       name: Android Fastlane with Firebase App Distribution Workflow
