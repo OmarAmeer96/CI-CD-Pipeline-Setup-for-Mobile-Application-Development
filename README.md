@@ -15,7 +15,7 @@ This guide outlines the process of setting up a CI/CD pipeline for a Flutter mob
 
 ## Setting Up Flavors in Flutter
 
-### `launch.json` Configuration
+### `.vscode\launch.json` Configuration
 ```json
 {
     "version": "0.2.0",
