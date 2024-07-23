@@ -15,7 +15,7 @@ This guide outlines the process of setting up a CI/CD pipeline for a Flutter mob
 
 ## Setting Up Flavors in Flutter
 
-### `.vscode\launch.json` Configuration
+### `..\.vscode\launch.json` Configuration
 ```json
 {
     "version": "0.2.0",
@@ -37,7 +37,7 @@ This guide outlines the process of setting up a CI/CD pipeline for a Flutter mob
     ]
 }
 ```
-### `build.gradle` Configuration
+### `..\android\app\build.gradle` Configuration
 ```groovy
 flavorDimensions "default"
 productFlavors {
@@ -53,7 +53,7 @@ productFlavors {
 }
 ```
 
-### `AndroidManifest.xml` Configuration
+### `..\android\app\src\main\AndroidManifest.xml` Configuration
 ```xml
 <application
     android:label="@string/app_name"
