@@ -92,7 +92,12 @@ flutter run --release -t lib/main_production.dart --flavor production
 
    - [Ruby Installer](https://rubyinstaller.org/)
 
-2. Install Fastlane:
+2. Install Fastlane (in cmd):
+   
+   - ```sh
+     gem install fastlane
+     ```
+3. Initialize Fastlane (in the project roor):
    
    - ```sh
      cd android
