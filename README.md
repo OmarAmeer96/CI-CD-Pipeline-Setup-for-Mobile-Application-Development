@@ -1,5 +1,7 @@
 # CI/CD Pipeline for Flutter Apps Development
 
+![Screenshot 2024-07-23 161614](https://github.com/user-attachments/assets/dff88e6c-bd72-41d3-bfd8-b892505503ea)
+
 ## Overview
 This guide outlines the process of setting up a CI/CD pipeline for a Flutter mobile application using Fastlane, GitHub Actions, and Firebase App Distribution. The pipeline automates building, testing, and distributing the app, streamlining development and ensuring rapid, consistent deployments.
 
