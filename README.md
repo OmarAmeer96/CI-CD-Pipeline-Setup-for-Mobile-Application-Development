@@ -3,21 +3,30 @@
 ![Screenshot 2024-07-23 161614](https://github.com/user-attachments/assets/dff88e6c-bd72-41d3-bfd8-b892505503ea)
 
 ## Overview
+
 This guide outlines the process of setting up a CI/CD pipeline for a Flutter mobile application using Fastlane, GitHub Actions, and Firebase App Distribution. The pipeline automates building, testing, and distributing the app, streamlining development and ensuring rapid, consistent deployments.
 
 ## Table of Contents
-- [Setting Up Flavors in Flutter](#setting-up-flavors-in-flutter)
-- [Firebase Configuration](#firebase-configuration)
-- [Installing Fastlane](#installing-fastlane)
-- [Integrating Firebase with Fastlane](#integrating-firebase-with-fastlane)
-- [Setting Up GitHub Actions](#setting-up-github-actions)
-- [Running the Pipeline](#running-the-pipeline)
-- [Conclusion](#conclusion)
-- [References](#references)
+
+- [CI/CD Pipeline for Flutter Apps Development](#cicd-pipeline-for-flutter-apps-development)
+  - [Overview](#overview)
+  - [Table of Contents](#table-of-contents)
+  - [Setting Up Flavors in Flutter](#setting-up-flavors-in-flutter)
+    - [`..\.vscode\launch.json` Configuration](#vscodelaunchjson-configuration)
+    - [`..\android\app\build.gradle` Configuration](#androidappbuildgradle-configuration)
+    - [`..\android\app\src\main\AndroidManifest.xml` Configuration](#androidappsrcmainandroidmanifestxml-configuration)
+  - [Firebase Configuration](#firebase-configuration)
+  - [Installing Fastlane](#installing-fastlane)
+  - [Integrating Firebase with Fastlane](#integrating-firebase-with-fastlane)
+  - [Setting Up GitHub Actions](#setting-up-github-actions)
+  - [Running the Pipeline](#running-the-pipeline)
+  - [Conclusion](#conclusion)
+  - [References](#references)
 
 ## Setting Up Flavors in Flutter
 
 ### `..\.vscode\launch.json` Configuration
+
 ```json
 {
     "version": "0.2.0",
@@ -39,7 +48,9 @@ This guide outlines the process of setting up a CI/CD pipeline for a Flutter mob
     ]
 }
 ```
+
 ### `..\android\app\build.gradle` Configuration
+
 ```groovy
 flavorDimensions "default"
 productFlavors {
@@ -56,6 +67,7 @@ productFlavors {
 ```
 
 ### `..\android\app\src\main\AndroidManifest.xml` Configuration
+
 ```xml
 <application
     android:label="@string/app_name"
@@ -65,6 +77,7 @@ productFlavors {
 ```
 
 Build Command
+
 ```sh
 flutter run --release -t lib/main_production.dart --flavor production
 ```
@@ -72,15 +85,15 @@ flutter run --release -t lib/main_production.dart --flavor production
 ## Firebase Configuration
 
 1. Create a new Firebase project on the Firebase console.
-   
+
 2. Login to Firebase:
-   
+
    - ```sh
      firebase login
      ```
-     
+
 3. Install and configure FlutterFire CLI:
-   
+
    - ```sh
      dart pub global activate flutterfire_cli
      flutterfire configure
@@ -95,12 +108,13 @@ flutter run --release -t lib/main_production.dart --flavor production
    - [Ruby Installer](https://rubyinstaller.org/)
 
 2. Install Fastlane (in cmd):
-   
+
    - ```sh
      gem install fastlane
      ```
+
 3. Initialize Fastlane (in project root):
-   
+
    - ```sh
      cd android
      fastlane init
@@ -109,19 +123,21 @@ flutter run --release -t lib/main_production.dart --flavor production
 ## Integrating Firebase with Fastlane
 
 1. Add the Firebase App Distribution plugin:
+
    - ```sh
      fastlane add_plugin firebase_app_distribution
      ```
-   
+
 2. Login to Firebase CLI:
-   
+
    - ```sh
      firebase login:ci
      ```
+
      Save the token for later use.
-     
+
 3. The `..\android\fastlane\Fastfile` file will be automatically created, update it with the following:
-   
+
    - ```ruby
      default_platform(:android)
 
@@ -151,59 +167,63 @@ flutter run --release -t lib/main_production.dart --flavor production
      - FIREBASE_OPTIONS_ANDROID_APP_ID
      - FIREBASE_OPTIONS_IOS_API_KEY
      - FIREBASE_OPTIONS_IOS_APP_ID
-       
+
    - Fastfile (2 secrets)
      - FIREBASE_CLI_TOKEN
      - APP_ID
 
 2. Create a GitHub Actions workflow file `..\.github\workflows\android_fastlane_firebase_app_distribution_workflow.yml`:
 
-   - ```yaml
-      name: Android Fastlane with Firebase App Distribution Workflow
-      
-      on:
-        push:
-          branches:
-            - mobile-app-stable # The branch that you would like to run the workflow when you push into it.
-      
-      jobs:
-        distribute_to_firebase:
-          runs-on: ubuntu-latest
-          steps:
-            - name: Checkout my repo code
-              uses: actions/checkout@v2
-      
-            - name: Set up JDK 11
-              uses: actions/setup-java@v2
-              with:
-                java-version: "11"
-                distribution: "temurin"
-      
-            - name: Install Flutter
-              uses: subosito/flutter-action@v2
-              with:
-                channel: stable
-      
-            # If there was an error, then run this: "cd android" then "bundle lock --add-platform x86_64-linux"
-            - name: Setup Ruby
-              uses: ruby/setup-ruby@v1
-              with:
-                ruby-version: "3.3.4"
-                bundler-cache: true
-                working-directory: android
-      
-            - name: Build and Distribute App
-              env:
-                APP_ID: ${{ secrets.APP_ID }}
-                FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
-                FIREBASE_OPTIONS_ANDROID_API_KEY: ${{ secrets.FIREBASE_OPTIONS_ANDROID_API_KEY }}
-                FIREBASE_OPTIONS_ANDROID_APP_ID: ${{ secrets.FIREBASE_OPTIONS_ANDROID_APP_ID }}
-                FIREBASE_OPTIONS_IOS_API_KEY: ${{ secrets.FIREBASE_OPTIONS_IOS_API_KEY }}
-                FIREBASE_OPTIONS_IOS_APP_ID: ${{ secrets.FIREBASE_OPTIONS_IOS_APP_ID }}
-              run: |
-                bundle exec fastlane android firebase_distribution
-              working-directory: android
-     ```
+   ```yaml
+   name: Android Fastlane App Distribution Workflow
+
+   on:
+     push:
+       branches:
+         - mobile-app-stable # The branch that you would like to run the workflow when you push into it.
+
+   jobs:
+     distribution_to_firebase:
+       runs-on: ubuntu-latest
+       steps:
+         - name: Checkout My Repository
+           uses: actions/checkout@v2
+
+         - name: Setup JDK 11
+           uses: actions/setup-java@v2
+           with:
+             distribution: 'temurin'
+             java-version: '11'
+
+         - name: Setup Flutter
+           uses: subosito/flutter-action@v2
+           with:
+             channel: 'stable'
+
+         - name: Setup Ruby
+           uses: ruby/setup-ruby@v1
+           with:
+             ruby-version: '3.3.4'
+             bundler-cache: false # Disable bundler-cache to manage dependencies manually
+
+         - name: Update Gemfile.lock platforms
+           run: |
+             cd android
+             bundle lock --add-platform x86_64-linux
+             bundle lock --add-platform ruby
+
+         - name: Install Ruby Dependencies
+           run: |
+             cd android
+             bundle install
+
+         - name: Flutter Build Android App And Upload To Firebase
+           env:
+             FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+           run: |
+             cd android
+             bundle exec fastlane android firebase_distribution
+   ```
 
 ## Running the Pipeline
 
